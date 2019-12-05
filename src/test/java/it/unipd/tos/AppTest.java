@@ -56,4 +56,19 @@ public class AppTest
 
         assertEquals(21-1.75,myApp.getOrderPrice(list),0);
     }
+
+    /**
+     *  Se l’importo totale delle ordinazioni (Panini e Fritti) supera i 50 euro viene fatto 
+     *  il 10% disconto
+     */
+    @Test
+    public void test_scontodi10SeLimportoTotaleDiPanini_e_FrittiSuperaI50() throws TakeAwayBillException {
+
+         list.add(new MenuItem(MenuItem.ItemType.Panino,"vegetariano",20));
+         list.add(new MenuItem(MenuItem.ItemType.Panino,"vegetariano",20));
+         list.add(new MenuItem(MenuItem.ItemType.Fritto,"arancino",15));
+         list.add(new MenuItem(MenuItem.ItemType.Fritto,"arancino",15));
+
+         assertEquals(70-7,myApp.getOrderPrice(list),0);
+    }    
 }

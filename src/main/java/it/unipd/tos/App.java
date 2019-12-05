@@ -34,6 +34,14 @@ public class App implements TakeAwayBill
              totale -= (paninoMenoCaro*0.5);
          }
 
+         double importoPaniniFritti = itemsOrdered.stream()
+                 .filter(x-> x.getType() == MenuItem.ItemType.Panino || x.getType() == MenuItem.ItemType.Fritto)
+                 .mapToDouble(MenuItem::getPrice).sum();
+
+         if(importoPaniniFritti > 50) {
+               totale -= totale*0.1;
+         }
+
          return totale;
      }
 }
