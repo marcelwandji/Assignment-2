@@ -33,7 +33,7 @@ public class AppTest
      * Dato un elenco di ordinazioni (Panini e Fritti e Bevande) calcolare il totale
      */
     @Test
-    public void test_totaleElencoOrdineDiPaniniFrittiBevande() throws TakeAwayBillException {
+    public void test_totaleElencoOrdineDiPanini_Fritti_e_Bevande() throws TakeAwayBillException {
 
          list.add(new MenuItem(MenuItem.ItemType.Panino,"vegetariano",3.5));
          list.add(new MenuItem(MenuItem.ItemType.Panino,"vegetariano",3.5));
@@ -48,7 +48,7 @@ public class AppTest
      *  del panino meno caro
      */
     @Test
-    public void test_OrdineCon5PaniniScontoDi50SuPaninoMenoCaro() throws TakeAwayBillException {
+    public void test_OrdineConPiuDi5PaniniScontoDi50pcSuPaninoMenoCaro() throws TakeAwayBillException {
 
         for(int i=0; i<6; i++) {
             list.add(new MenuItem(MenuItem.ItemType.Panino,"vegetariano",3.5));
@@ -62,7 +62,7 @@ public class AppTest
      *  il 10% disconto
      */
     @Test
-    public void test_scontodi10SeLimportoTotaleDiPanini_e_FrittiSuperaI50() throws TakeAwayBillException {
+    public void test_scontodi10pcSeLimportoTotaleDiPanini_e_FrittiSuperaI50() throws TakeAwayBillException {
 
          list.add(new MenuItem(MenuItem.ItemType.Panino,"vegetariano",20));
          list.add(new MenuItem(MenuItem.ItemType.Panino,"vegetariano",20));
@@ -77,16 +77,26 @@ public class AppTest
      * messaggio d’errore
      */
     @Test(expected = TakeAwayBillException.class)
-    public void test_OrdineConPiuDi30Elementi() throws TakeAwayBillException {
+    public void test_OrdineConPiuDi30ElementiLanciaUnEccezione() throws TakeAwayBillException {
 
-        for (int i=0; i<31; i++)
+        for(int i=0; i<31; i++)
             list.add(new MenuItem(MenuItem.ItemType.Panino,"vegetariano",20));
+
         myApp.getOrderPrice(list);
 
-       /* try {
-            myApp.getOrderPrice(list);
-        } catch (TakeAwayBillException expected) {
-            expected.printStackTrace();
-        }*/
     }
+    
+    /**
+     *  Se l’importo totale è inferiore a 10 € viene aggiunta una commissione di 0,50 €
+     */
+    @Test
+    public void test_aggiuntaCommisione_0_5_seImportoTotaleminoreDi10() throws TakeAwayBillException{
+
+         list.add(new MenuItem(MenuItem.ItemType.Panino,"vegetariano",2.5));
+         list.add(new MenuItem(MenuItem.ItemType.Panino,"vegetariano",2.5));
+         list.add(new MenuItem(MenuItem.ItemType.Bevande,"Coca-Cola",1.5));
+         list.add(new MenuItem(MenuItem.ItemType.Bevande,"Pepsi",1.5));
+
+         assertEquals(8+0.5,myApp.getOrderPrice(list),0);
+    }    
 }

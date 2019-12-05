@@ -44,6 +44,10 @@ public class App implements TakeAwayBill
                totale -= totale*0.1;
          }
 
+         if(totale < 10) {
+             totale += 0.5;
+         }
+
          return totale;
      }
 }
