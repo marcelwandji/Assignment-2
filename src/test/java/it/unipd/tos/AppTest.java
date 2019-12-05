@@ -4,39 +4,37 @@
 
 package it.unipd.tos;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import it.unipd.tos.business.exception.TakeAwayBillException;
+import it.unipd.tos.model.MenuItem;
+import org.junit.Test;
 
+import java.util.ArrayList;
+
+import static org.junit.Assert.*;
 /**
  * Unit test for simple App.
  */
 public class AppTest 
-    extends TestCase
 {
-    /**
-     * Create the test case
-     *
-     * @param testName name of the test case
-     */
-    public AppTest( String testName )
-    {
-        super( testName );
-    }
+	private ArrayList<MenuItem> list;
+    private App myApp;
 
-    /**
-     * @return the suite of tests being tested
-     */
-    public static Test suite()
-    {
-        return new TestSuite( AppTest.class );
+    public AppTest() {
+        myApp = new App();
     }
+    /**
+     * Dato un elenco di ordinazioni (Panini e Fritti e Bevande) calcolare il totale
+     */
+        @Test
+        public void test_totaleElencoOrdineDiPaniniFrittiBevande() throws TakeAwayBillException {
+            list = new ArrayList<MenuItem>();
+            myApp = new App();
 
-    /**
-     * Rigourous Test :-)
-     */
-    public void testApp()
-    {
-        assertTrue( true );
-    }
+            list.add(new MenuItem(MenuItem.ItemType.Panino,"vegetariano",3.5));
+            list.add(new MenuItem(MenuItem.ItemType.Panino,"vegetariano",3.5));
+            list.add(new MenuItem(MenuItem.ItemType.Fritto,"arancino",2.5));
+            list.add(new MenuItem(MenuItem.ItemType.Bevande,"fanta",1.5));
+
+            assertEquals(11,myApp.getOrderPrice(list),0);
+        }
 }
