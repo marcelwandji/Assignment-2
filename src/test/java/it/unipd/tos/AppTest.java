@@ -70,5 +70,23 @@ public class AppTest
          list.add(new MenuItem(MenuItem.ItemType.Fritto,"arancino",15));
 
          assertEquals(70-7,myApp.getOrderPrice(list),0);
-    }    
+    }
+    
+    /**
+     * Non è possibile avere un’ordinazione con più di 30 elementi (se accade prevedere un 
+     * messaggio d’errore
+     */
+    @Test(expected = TakeAwayBillException.class)
+    public void test_OrdineConPiuDi30Elementi() throws TakeAwayBillException {
+
+        for (int i=0; i<31; i++)
+            list.add(new MenuItem(MenuItem.ItemType.Panino,"vegetariano",20));
+        myApp.getOrderPrice(list);
+
+       /* try {
+            myApp.getOrderPrice(list);
+        } catch (TakeAwayBillException expected) {
+            expected.printStackTrace();
+        }*/
+    }
 }

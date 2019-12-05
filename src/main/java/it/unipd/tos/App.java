@@ -18,9 +18,11 @@ public class App implements TakeAwayBill
 {
      @Override
      public double getOrderPrice(List<MenuItem> itemsOrdered) throws TakeAwayBillException {
-         double totale = 0;
+         if( itemsOrdered.size()>30 || itemsOrdered.size() == 0){
+             throw  new TakeAwayBillException("ORDINE NON VALIDO");
+         }
 
-         totale = itemsOrdered.stream().mapToDouble(MenuItem::getPrice).sum();
+         double totale = itemsOrdered.stream().mapToDouble(MenuItem::getPrice).sum();
 
          long contaPanini = itemsOrdered.stream()
                    .filter(m -> m.getType() == MenuItem.ItemType.Panino).count();
