@@ -22,6 +22,18 @@ public class App implements TakeAwayBill
 
          totale = itemsOrdered.stream().mapToDouble(MenuItem::getPrice).sum();
 
+         long contaPanini = itemsOrdered.stream()
+                   .filter(m -> m.getType() == MenuItem.ItemType.Panino).count();
+
+         if(contaPanini>5) {
+
+             double paninoMenoCaro = itemsOrdered.stream()
+                     .filter(m-> m.getType() == MenuItem.ItemType.Panino)
+                     .mapToDouble(MenuItem::getPrice).min().getAsDouble();
+
+             totale -= (paninoMenoCaro*0.5);
+         }
+
          return totale;
      }
 }
