@@ -59,10 +59,10 @@ public class AppTest
 
     /**
      *  Se l’importo totale delle ordinazioni (Panini e Fritti) supera i 50 euro viene fatto 
-     *  il 10% disconto
+     *  il 10% di sconto
      */
     @Test
-    public void test_scontodi10pcSeLimportoTotaleDiPanini_e_FrittiSuperaI50() throws TakeAwayBillException {
+    public void test_scontoDi10pcSeLimportoTotaleDiPanini_e_FrittiSuperaI50() throws TakeAwayBillException {
 
          list.add(new MenuItem(MenuItem.ItemType.Panino,"vegetariano",20));
          list.add(new MenuItem(MenuItem.ItemType.Panino,"vegetariano",20));
@@ -98,5 +98,52 @@ public class AppTest
          list.add(new MenuItem(MenuItem.ItemType.Bevande,"Pepsi",1.5));
 
          assertEquals(8+0.5,myApp.getOrderPrice(list),0);
-    }    
+    }
+
+    /**
+     *  Se non c'e' nessun ordine viene segnalato un errore 
+     */
+    @Test(expected = TakeAwayBillException.class)
+    public void test_OrdineConNessunElemento() throws TakeAwayBillException {
+    	myApp.getOrderPrice(list);
+    }
+
+    /**
+     *  Ordine con più di 5 Panini  e l'importo totale (Panini e Fritti) supera i 50 euro 
+     *   
+     */
+    @Test
+    public void test_ordineConPiuDi5Panini_e_importoTotalePaniniFrittiSuperaI50() throws TakeAwayBillException{
+
+        for(int i=0; i<8; i++) {
+            list.add(new MenuItem(MenuItem.ItemType.Panino,"primavera",5));
+            list.add(new MenuItem(MenuItem.ItemType.Fritto,"arancino",4));
+        }
+
+        double totale = 5*8 + 4*8; // totale e' 72
+        totale -= 2.5; // sconto di 50% sul prezzo del panino meno caro quindi uguale a 69.5
+        totale -= 0.1*totale; //sconto di 10% perche' totale e' maggiore di 50 quindi 69,5-6,95= 62,55
+
+        assertEquals(totale,myApp.getOrderPrice(list),0);
+    }
+
+    /**
+     *  Ordine con più di 5 Panini  e l'importo totale minore di 10 euro 
+     *   
+     */
+    @Test
+    public void test_ordineConPiuDi5Panini_e_importoTotaleMinoreDi10() throws TakeAwayBillException{
+
+        for(int i=0; i<5; i++) {
+            list.add(new MenuItem(MenuItem.ItemType.Panino,"primavera",1.75));
+        }
+
+        list.add(new MenuItem(MenuItem.ItemType.Panino,"primavera",2));
+
+        double totale = 5*1.75 + 2; // totale e' 10,75
+        totale -= 0.875; // sconto di 50% sul prezzo del panino meno caro quindi uguale a 9,875
+        totale += 0.5 ;  // commissione di 0,5 perche' totale e' inferiore a 10 euro quindi 9,875+0,5= 10,375
+
+        assertEquals(totale,myApp.getOrderPrice(list),0);
+    }
 }
